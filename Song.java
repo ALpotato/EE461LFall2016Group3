@@ -10,6 +10,11 @@ public class Song {
 	//music object for the song mp3 goes here
 	Notefile notes;
 	
+	public Song (File f)
+	{
+		notes = new Notefile(f);
+	}
+	
 	public Song(Notefile n)
 	{
 		notes = n;
@@ -32,20 +37,21 @@ class Notefile {
 			while((line = reader.readLine()).substring(0,7).equals("#OFFSET") == false)
 				{} //do nothing, this iterates through extraneous lines
 			
-			currentTime = Double.parseDouble(line.split("=")[1]); //sets song start time
+			currentTime = Double.parseDouble(line.split("[:;]")[1]); //sets song start time
 			
 			while((line = reader.readLine()).substring(0,5).equals("#BPMS") == false)
 				{}	//iterates through more extraneous lines
 			
-			bpm = Double.parseDouble(line.split("=")[1]); //sets song beats per minute
+			bpm = Double.parseDouble(line.split("[=;]")[1]); //sets song beats per minute
 			
 			while((line = reader.readLine()).length() != 4)
 				{}//iterate through more extraneous lines
 			
 			ArrayList<String> currentMeasure = new ArrayList<String>();
-			while((line = reader.readLine()).equals(";") == false) //.SM files always end with a ';'
+			currentMeasure.add(line);
+			while((line = reader.readLine()) != null) //while there are still notes
 			{
-				if (line.indexOf(',') != -1 && line.indexOf(';') != -1) //add notes to temporary array
+				if (line.indexOf(',') == -1 && line.indexOf(';') == -1) //add notes to temporary array
 					currentMeasure.add(line);
 				else //end of measure, process measure
 				{
@@ -55,8 +61,10 @@ class Notefile {
 					{
 						for (int i = 0; i < 4; i++)
 						{
-							if (s.charAt(i) == 1) //1 means there is a note on this track at this time
-								n.add(new Note(i, currentTime)); //this is where the actual notes are generated
+							if (s.charAt(i) == '1') //1 means there is a note on this track at this time
+							{
+								n.add(new Note(i+1, currentTime)); //this is where the actual notes are generated
+							}
 						}
 						currentTime += timePerBeat;
 					}
