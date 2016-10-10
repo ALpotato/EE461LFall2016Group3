@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Song {
 	//music object for the song mp3 goes here
 	private Notefile notes;
-	private double songTime;
+	private int songStartTime;
 	private long trueTime;
 	
 	public Song (File f)
@@ -25,7 +25,7 @@ public class Song {
 	public void play()
 	{
 		trueTime = System.currentTimeMillis();
-		songTime = notes.getNotes().get(0).getTime() - 5.0;
+		songStartTime = notes.getNotes().get(0).getTime() - 5000;
 	}
 	
 	public Notefile getNotes()
@@ -33,9 +33,9 @@ public class Song {
 		return notes;
 	}
 	
-	public double getSongTime()
+	public int getSongStartTime()
 	{
-		return songTime;
+		return songStartTime;
 	}
 	
 	public long getTrueTime()
@@ -86,7 +86,7 @@ class Notefile {
 						{
 							if (s.charAt(i) == '1') //1 means there is a note on this track at this time
 							{
-								n.add(new Note(i+1, currentTime)); //this is where the actual notes are generated
+								n.add(new Note(i+1, (int)(currentTime*1000))); //this is where the actual notes are generated
 							}
 						}
 						currentTime += timePerBeat;
@@ -109,9 +109,9 @@ class Notefile {
 
 class Note {
 	private int track; //which column the note is on e.g. left, down, up, right
-	private double time; //time since start of song the note is located
+	private int time; //time since start of song the note is located
 	
-	public Note(int tr, double ti){
+	public Note(int tr, int ti){
 		track = tr;
 		time = ti;
 	}
@@ -121,7 +121,7 @@ class Note {
 		return track;
 	}
 	
-	public double getTime()
+	public int getTime()
 	{
 		return time;
 	}
