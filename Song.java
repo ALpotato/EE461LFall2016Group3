@@ -8,7 +8,9 @@ import java.util.ArrayList;
 
 public class Song {
 	//music object for the song mp3 goes here
-	Notefile notes;
+	private Notefile notes;
+	private double songTime;
+	private long trueTime;
 	
 	public Song (File f)
 	{
@@ -19,11 +21,32 @@ public class Song {
 	{
 		notes = n;
 	}
+	
+	public void play()
+	{
+		trueTime = System.currentTimeMillis();
+		songTime = notes.getNotes().get(0).getTime() - 5.0;
+	}
+	
+	public Notefile getNotes()
+	{
+		return notes;
+	}
+	
+	public double getSongTime()
+	{
+		return songTime;
+	}
+	
+	public long getTrueTime()
+	{
+		return trueTime;
+	}
 }
 
 //TODO: make this a Singleton
 class Notefile {
-	ArrayList<Note> notes = new ArrayList<Note>(); //list of notes in the song
+	private ArrayList<Note> notes = new ArrayList<Note>(); //list of notes in the song
 	
 	public Notefile(File f) //f is a .SM file created using external programs
 	{
@@ -77,14 +100,29 @@ class Notefile {
 		}
 		notes = n;
 	}
+	
+	public ArrayList<Note> getNotes()
+	{
+		return notes;
+	}
 }
 
 class Note {
-	int track; //which column the note is on e.g. left, down, up, right
-	double time; //time since start of song the note is located
+	private int track; //which column the note is on e.g. left, down, up, right
+	private double time; //time since start of song the note is located
 	
 	public Note(int tr, double ti){
 		track = tr;
 		time = ti;
+	}
+	
+	public int getTrack()
+	{
+		return track;
+	}
+	
+	public double getTime()
+	{
+		return time;
 	}
 }
