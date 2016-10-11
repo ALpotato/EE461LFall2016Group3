@@ -2,8 +2,15 @@ package jjr;
 
 import java.applet.Applet;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 @SuppressWarnings("serial")
 public class Game extends Applet implements KeyListener{ 
@@ -19,9 +26,26 @@ public class Game extends Applet implements KeyListener{
 	int up = 39;
 	int right = 38;
 	
+	BufferedImage receptors = null;
+	BufferedImage leftArrow = null;
+	BufferedImage downArrow = null;
+	BufferedImage upArrow = null;
+	BufferedImage rightArrow = null;
 	
+	Graphics bufferGraphics;
+	Image image;
 	
 	public void init() {
+		try {
+		    receptors = ImageIO.read(new File("receptors.png"));
+		    leftArrow = ImageIO.read(new File("leftarrow.png"));
+		    downArrow = ImageIO.read(new File("downarrow.png"));
+		    upArrow = ImageIO.read(new File("uparrow.png"));
+		    rightArrow = ImageIO.read(new File("rightarrow.png"));
+		} catch (IOException e) {
+		}
+		image = createImage(750,1200);
+		bufferGraphics = image.getGraphics();
 		addKeyListener(this);
 		setFocusable(true);
 		requestFocusInWindow();
@@ -30,16 +54,27 @@ public class Game extends Applet implements KeyListener{
 	
 	public void paint(Graphics g)
 	{
-		//TODO: add drawing the receptors
+		bufferGraphics.clearRect(0, 0, 750, 1200);
+		bufferGraphics.drawImage(receptors, 100, 150, this);
+		int currentTime = (int)(System.currentTimeMillis() - s.getTrueTime());
 		for (Note n : s.getNotes().getNotes())
 		{
-			if (n.getTime() > 1000)
+			if (n.getTime() - currentTime > 1000)
 				break;
 			else
 			{
-				//draw note. will do this when i make the note images
+				if(n.getTrack() == 1)
+					bufferGraphics.drawImage(leftArrow, 100, 150+(n.getTime() - currentTime), this);
+				else if(n.getTrack() == 2)
+					bufferGraphics.drawImage(downArrow, 250, 150+(n.getTime() - currentTime), this);
+				else if(n.getTrack() == 3)
+					bufferGraphics.drawImage(upArrow, 400, 150+(n.getTime() - currentTime), this);
+				else if(n.getTrack() == 4)
+					bufferGraphics.drawImage(rightArrow, 550, 150+(n.getTime() - currentTime), this);
 			}
 		}
+		Graphics2D g2 = (Graphics2D) g;
+		g2.drawImage(image, 0, 0, this);
 		frame(); //double buffer secondary method
 	}
 	
