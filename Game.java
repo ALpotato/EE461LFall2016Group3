@@ -1,6 +1,7 @@
 package jjr;
 
 import java.applet.Applet;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -20,12 +21,12 @@ public class Game extends Applet implements KeyListener{
 	//actually need is minimal.. If you know Swing or JavaFX 
 	//and want to convert the code into one of these, be my guest.
 
-	Song s = new Song(new File("Quasar.sm"));
+	Song s = new Song(new File("Beginner.sm"));
 	
-	int left = 37;
-	int down = 40;
-	int up = 38;
-	int right = 39;
+	int left = 65;
+	int down = 83;
+	int up = 87;
+	int right = 68;
 	
 	BufferedImage receptors = null;
 	BufferedImage leftArrow = null;
@@ -46,6 +47,13 @@ public class Game extends Applet implements KeyListener{
 	int bads = 0;
 	int misses = 0;
 	
+	int combo = 0;
+	int maxCombo = 0;
+	
+	int judgement = 9;
+	
+	String playerName = "Michael Marino";
+	
 	boolean songOver = false;
 	
 	DecimalFormat d = new DecimalFormat("#.##%");
@@ -61,6 +69,9 @@ public class Game extends Applet implements KeyListener{
 		}
 		image = createImage(750,1200);
 		bufferGraphics = image.getGraphics();
+		Font currentFont = bufferGraphics.getFont();
+		Font newFont = currentFont.deriveFont(currentFont.getSize() * 2F);
+		bufferGraphics.setFont(newFont);
 		s.play();
 		addKeyListener(this);
 		setFocusable(true);
@@ -69,6 +80,7 @@ public class Game extends Applet implements KeyListener{
 	
 	public void paint(Graphics g)
 	{
+		bufferGraphics.setFont(bufferGraphics.getFont().deriveFont(bufferGraphics.getFont().getSize() * 2F));
 		bufferGraphics.clearRect(0, 0, 750, 1200);
 		if (songOver == false)
 		{
@@ -83,6 +95,8 @@ public class Game extends Applet implements KeyListener{
 					life-=10;
 					score-=10;
 					misses+=1;
+					combo=0;
+					judgement = 4;
 					s.getNotes().getNotes().remove(n);
 				}
 				else if ((n.getTime()-s.getSongStartTime()) - currentTime > 1000)
@@ -99,8 +113,38 @@ public class Game extends Applet implements KeyListener{
 						bufferGraphics.drawImage(rightArrow, 550, 150+((n.getTime()-s.getSongStartTime()) - currentTime), this);
 				}
 			}
+			if (judgement == 0)
+			{
+				bufferGraphics.drawString("Perfect!!", 300, 900);
+			}
+			else if (judgement == 1)
+			{
+				bufferGraphics.drawString("Great!", 300, 900);
+			}
+			else if (judgement == 2)
+			{
+				bufferGraphics.drawString("Good", 300, 900);
+			}
+			else if (judgement == 3)
+			{
+				bufferGraphics.drawString("Bad", 300, 900);
+			}
+			else if (judgement == 4)
+			{
+				bufferGraphics.drawString("Miss...", 300, 900);
+			}
+			bufferGraphics.setFont(bufferGraphics.getFont().deriveFont(bufferGraphics.getFont().getSize() * 0.5F));
+			bufferGraphics.drawString("Combo: " + combo, 600, 1000);
 			bufferGraphics.drawString("Life: " + life + "/200", 25, 25);
-			bufferGraphics.drawString(d.format(score/maxScore), 25, 50);
+			bufferGraphics.drawString(d.format(score/maxScore), 25, 75);
+			bufferGraphics.setFont(bufferGraphics.getFont().deriveFont(bufferGraphics.getFont().getSize() * 0.5F));
+			bufferGraphics.drawString("Perfect: " + perfs, 25, 400);
+			bufferGraphics.drawString("Great: " + greats, 25, 450);
+			bufferGraphics.drawString("Good: " + goods, 25, 500);
+			bufferGraphics.drawString("Bad: " + bads, 25, 550);
+			bufferGraphics.drawString("Miss: " + misses, 25, 600);
+			bufferGraphics.drawString(playerName, 25, 1000);
+			bufferGraphics.setFont(bufferGraphics.getFont().deriveFont(bufferGraphics.getFont().getSize() * 2F));
 			Graphics2D g2 = (Graphics2D) g;
 			g2.drawImage(image, 0, 0, this);
 			frame(); //double buffer secondary method
@@ -112,7 +156,8 @@ public class Game extends Applet implements KeyListener{
 			bufferGraphics.drawString("Good: " + goods, 100, 300);
 			bufferGraphics.drawString("Bad: " + bads, 100, 400);
 			bufferGraphics.drawString("Miss: " + misses, 100, 500);
-			bufferGraphics.drawString("Score: " + d.format(score/maxScore), 100, 700);
+			bufferGraphics.drawString("Max Combo: " + maxCombo, 100, 600);
+			bufferGraphics.drawString("Score: " + d.format(score/maxScore), 100, 800);
 			Graphics2D g2 = (Graphics2D) g;
 			g2.drawImage(image, 0, 0, this);
 		}
@@ -164,6 +209,8 @@ public class Game extends Applet implements KeyListener{
 						life = 200;
 					score+=2;
 					perfs+=1;
+					combo+=1;
+					judgement = 0;
 					s.getNotes().getNotes().remove(n);
 				}
 				else if (Math.abs(noteTime - tapTime) < 100)
@@ -174,12 +221,16 @@ public class Game extends Applet implements KeyListener{
 						life = 200;
 					score+=1;
 					greats+=1;
+					combo+=1;
+					judgement = 1;
 					s.getNotes().getNotes().remove(n);
 				}
 				else if (Math.abs(noteTime - tapTime) < 150)
 				{
 					System.out.println("Good"); //for debugging
 					goods+=1;
+					combo=0;
+					judgement = 2;
 					s.getNotes().getNotes().remove(n);
 				}
 				else if (Math.abs(noteTime - tapTime) < 200)
@@ -188,7 +239,13 @@ public class Game extends Applet implements KeyListener{
 					life-=5;
 					score-=5;
 					bads+=1;
+					combo=0;
+					judgement = 3;
 					s.getNotes().getNotes().remove(n);
+				}
+				if (combo > maxCombo)
+				{
+					maxCombo = combo;
 				}
 				break;
 			}
