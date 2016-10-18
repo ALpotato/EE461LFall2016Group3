@@ -52,6 +52,8 @@ public class Game extends Applet implements KeyListener{
 	
 	int judgement = 9;
 	
+	boolean fail = false;
+	
 	String playerName = "Michael Marino";
 	
 	boolean songOver = false;
@@ -158,6 +160,70 @@ public class Game extends Applet implements KeyListener{
 			bufferGraphics.drawString("Miss: " + misses, 100, 500);
 			bufferGraphics.drawString("Max Combo: " + maxCombo, 100, 600);
 			bufferGraphics.drawString("Score: " + d.format(score/maxScore), 100, 800);
+			if (fail == true)
+			{
+				bufferGraphics.drawString("Grade: F", 100, 900);
+			}
+			else if (score == maxScore)
+			{
+				bufferGraphics.drawString("Grade: AAA", 100, 900);
+			}
+			else if (score >= maxScore*0.99)
+			{
+				bufferGraphics.drawString("Grade: AA", 100, 900);
+			}
+			else if (score >= maxScore*0.97)
+			{
+				bufferGraphics.drawString("Grade: A+", 100, 900);
+			}
+			else if (score >= maxScore*0.92)
+			{
+				bufferGraphics.drawString("Grade: A", 100, 900);
+			}
+			else if (score >= maxScore*0.90)
+			{
+				bufferGraphics.drawString("Grade: A-", 100, 900);
+			}
+			else if (score >= maxScore*0.88)
+			{
+				bufferGraphics.drawString("Grade: B+", 100, 900);
+			}
+			else if (score >= maxScore*0.82)
+			{
+				bufferGraphics.drawString("Grade: B", 100, 900);
+			}
+			else if (score >= maxScore*0.80)
+			{
+				bufferGraphics.drawString("Grade: B-", 100, 900);
+			}
+			else if (score >= maxScore*0.78)
+			{
+				bufferGraphics.drawString("Grade: C+", 100, 900);
+			}
+			else if (score >= maxScore*0.72)
+			{
+				bufferGraphics.drawString("Grade: C", 100, 900);
+			}
+			else if (score >= maxScore*0.70)
+			{
+				bufferGraphics.drawString("Grade: C-", 100, 900);
+			}
+			else if (score >= maxScore*0.68)
+			{
+				bufferGraphics.drawString("Grade: D+", 100, 900);
+			}
+			else if (score >= maxScore*0.62)
+			{
+				bufferGraphics.drawString("Grade: D", 100, 900);
+			}
+			else if (score >= maxScore*0.60)
+			{
+				bufferGraphics.drawString("Grade: D-", 100, 900);
+			}
+			else
+			{
+				bufferGraphics.drawString("Grade: E", 100, 900);
+			}
 			Graphics2D g2 = (Graphics2D) g;
 			g2.drawImage(image, 0, 0, this);
 		}
@@ -172,7 +238,13 @@ public class Game extends Applet implements KeyListener{
 	{
 		while (System.currentTimeMillis() % 10 != 0) {}; //100fps
 		if (life <= 0 || s.getNotes().getNotes().size() == 0)
+		{
 			songOver = true;
+			if (life <= 0)
+			{
+				fail = true;
+			}
+		}
 		repaint();
 	}
 

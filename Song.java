@@ -14,7 +14,8 @@ public class Song {
 	
 	public Song (File f)
 	{
-		notes = new Notefile(f);
+		notes = Notefile.getInstance();
+		notes.createFile(f);
 	}
 	
 	public Song(Notefile n)
@@ -44,11 +45,13 @@ public class Song {
 	}
 }
 
-//TODO: make this a Singleton
 class Notefile {
+	private static Notefile notefile = new Notefile();
 	private ArrayList<Note> notes = new ArrayList<Note>(); //list of notes in the song
 	
-	public Notefile(File f) //f is a .SM file created using external programs
+	private Notefile() {}
+	
+	public void createFile(File f)//f is a .SM file created using external programs
 	{
 		ArrayList<Note> n = new ArrayList<Note>();
 		//parses the .SM file to produce a Notefile
@@ -104,6 +107,11 @@ class Notefile {
 	public ArrayList<Note> getNotes()
 	{
 		return notes;
+	}
+	
+	public static Notefile getInstance()
+	{
+		return notefile;
 	}
 }
 
