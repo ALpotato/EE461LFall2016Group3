@@ -21,12 +21,12 @@ public class Game extends Applet implements KeyListener{
 	//actually need is minimal.. If you know Swing or JavaFX 
 	//and want to convert the code into one of these, be my guest.
 
-	Song s = new Song(new File("Beginner.sm"));
+	Song s = new Song(new File("Quasar.sm"), new File("Quasar.mp3"));
 	
 	int left = 65;
 	int down = 83;
-	int up = 87;
-	int right = 68;
+	int up = 75;
+	int right = 76;
 	
 	BufferedImage receptors = null;
 	BufferedImage leftArrow = null;
@@ -91,9 +91,8 @@ public class Game extends Applet implements KeyListener{
 			for (int i = 0; i < s.getNotes().getNotes().size(); i++)
 			{
 				Note n = s.getNotes().getNotes().get(i);
-				if ((n.getTime()-s.getSongStartTime()) - currentTime < -200)
+				if (n.getTime()- currentTime < -200)
 				{
-					System.out.println("Miss...");
 					life-=10;
 					score-=10;
 					misses+=1;
@@ -101,18 +100,18 @@ public class Game extends Applet implements KeyListener{
 					judgement = 4;
 					s.getNotes().getNotes().remove(n);
 				}
-				else if ((n.getTime()-s.getSongStartTime()) - currentTime > 1000)
+				else if (n.getTime() - currentTime > 1000)
 					break;
 				else
 				{
 					if(n.getTrack() == 1)
-						bufferGraphics.drawImage(leftArrow, 100, 150+((n.getTime()-s.getSongStartTime()) - currentTime), this);
+						bufferGraphics.drawImage(leftArrow, 100, (int) (150+(n.getTime() - currentTime)*1.5), this);
 					else if(n.getTrack() == 2)
-						bufferGraphics.drawImage(downArrow, 250, 150+((n.getTime()-s.getSongStartTime()) - currentTime), this);
+						bufferGraphics.drawImage(downArrow, 250, (int) (150+(n.getTime() - currentTime)*1.5), this);
 					else if(n.getTrack() == 3)
-						bufferGraphics.drawImage(upArrow, 400, 150+((n.getTime()-s.getSongStartTime()) - currentTime), this);
+						bufferGraphics.drawImage(upArrow, 400, (int) (150+(n.getTime() - currentTime)*1.5), this);
 					else if(n.getTrack() == 4)
-						bufferGraphics.drawImage(rightArrow, 550, 150+((n.getTime()-s.getSongStartTime()) - currentTime), this);
+						bufferGraphics.drawImage(rightArrow, 550, (int) (150+(n.getTime() - currentTime)*1.5), this);
 				}
 			}
 			if (judgement == 0)
@@ -244,6 +243,7 @@ public class Game extends Applet implements KeyListener{
 			{
 				fail = true;
 			}
+			s.getSongThread().end();
 		}
 		repaint();
 	}
@@ -271,11 +271,9 @@ public class Game extends Applet implements KeyListener{
 		{
 			if (n.getTrack() == track)
 			{
-				int noteTime = n.getTime() - s.getSongStartTime();
-				System.out.println(Math.abs(noteTime - tapTime));
+				int noteTime = n.getTime();
 				if (Math.abs(noteTime - tapTime) < 50)
 				{
-					System.out.println("Perfect!!"); // for debugging
 					life+=2;
 					if (life > 200)
 						life = 200;
@@ -287,7 +285,6 @@ public class Game extends Applet implements KeyListener{
 				}
 				else if (Math.abs(noteTime - tapTime) < 100)
 				{
-					System.out.println("Great!"); //for debugging
 					life+=1;
 					if (life > 200)
 						life = 200;
@@ -299,7 +296,6 @@ public class Game extends Applet implements KeyListener{
 				}
 				else if (Math.abs(noteTime - tapTime) < 150)
 				{
-					System.out.println("Good"); //for debugging
 					goods+=1;
 					combo=0;
 					judgement = 2;
@@ -307,7 +303,6 @@ public class Game extends Applet implements KeyListener{
 				}
 				else if (Math.abs(noteTime - tapTime) < 200)
 				{
-					System.out.println("Bad"); //for debugging
 					life-=5;
 					score-=5;
 					bads+=1;

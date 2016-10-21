@@ -2,31 +2,34 @@ package jjr;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
 public class Song {
-	//music object for the song mp3 goes here
+	private SongThread st;
 	private Notefile notes;
-	private int songStartTime;
 	private long trueTime;
 	
-	public Song (File f)
+	public Song (File nf, File mf)
 	{
 		notes = Notefile.getInstance();
-		notes.createFile(f);
-	}
-	
-	public Song(Notefile n)
-	{
-		notes = n;
+		notes.createFile(nf);
+		try {
+			st = new SongThread(new FileInputStream(mf));
+		} catch (FileNotFoundException e) {
+		}
 	}
 	
 	public void play()
 	{
-		trueTime = System.currentTimeMillis();
-		songStartTime = notes.getNotes().get(0).getTime() - 5000;
+		trueTime = System.currentTimeMillis() + this.getNotes().getNotes().get(0).getTime() - this.getNotes().getOffset() - 1000;
+		st.start();
 	}
 	
 	public Notefile getNotes()
@@ -34,21 +37,43 @@ public class Song {
 		return notes;
 	}
 	
-	public int getSongStartTime()
-	{
-		return songStartTime;
-	}
-	
 	public long getTrueTime()
 	{
 		return trueTime;
+	}
+	
+	public SongThread getSongThread()
+	{
+		return st;
+	}
+}
+
+class SongThread extends Thread
+{
+	private FileInputStream music;
+	public SongThread(FileInputStream f)
+	{
+		music = f;
+	}
+	Player playMP3;
+	public void run() {
+
+		try {
+			playMP3 = new Player(music);
+			playMP3.play();
+		} catch (JavaLayerException e) {
+		}
+	}
+	
+	public void end() {
+		playMP3.close();
 	}
 }
 
 class Notefile {
 	private static Notefile notefile = new Notefile();
 	private ArrayList<Note> notes = new ArrayList<Note>(); //list of notes in the song
-	
+	private int offset;
 	private Notefile() {}
 	
 	public void createFile(File f)//f is a .SM file created using external programs
@@ -63,7 +88,8 @@ class Notefile {
 			while((line = reader.readLine()).substring(0,7).equals("#OFFSET") == false)
 				{} //do nothing, this iterates through extraneous lines
 			
-			currentTime = Double.parseDouble(line.split("[:;]")[1]); //sets song start time
+			currentTime = -1*Double.parseDouble(line.split("[:;]")[1]);//sets song start time
+			offset = (int) (currentTime*1000);
 			
 			while((line = reader.readLine()).substring(0,5).equals("#BPMS") == false)
 				{}	//iterates through more extraneous lines
@@ -98,6 +124,7 @@ class Notefile {
 				}
 			}
 			reader.close();
+		System.out.println(n.get(0).getTime());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -107,6 +134,11 @@ class Notefile {
 	public ArrayList<Note> getNotes()
 	{
 		return notes;
+	}
+	
+	public int getOffset()
+	{
+		return offset;
 	}
 	
 	public static Notefile getInstance()
