@@ -21,7 +21,7 @@ public class Game extends Applet implements KeyListener{
 	//actually need is minimal.. If you know Swing or JavaFX 
 	//and want to convert the code into one of these, be my guest.
 
-	Song s = new Song(new File("Quasar.sm"), new File("Quasar.mp3"));
+	Song s;
 	
 	int left = 65;
 	int down = 83;
@@ -39,7 +39,7 @@ public class Game extends Applet implements KeyListener{
 	
 	int life = 100;
 	double score = 0.0;
-	double maxScore = s.getNotes().getNotes().size() * 2.0;
+	double maxScore;
 	
 	int perfs = 0;
 	int greats = 0;
@@ -74,10 +74,12 @@ public class Game extends Applet implements KeyListener{
 		Font currentFont = bufferGraphics.getFont();
 		Font newFont = currentFont.deriveFont(currentFont.getSize() * 2F);
 		bufferGraphics.setFont(newFont);
-		s.play();
 		addKeyListener(this);
 		setFocusable(true);
 		requestFocusInWindow();
+		s = new Song(new File("Extratone Pirates.sm"), new File("Extratone Pirates.mp3"));
+		s.play();
+		maxScore = s.getNotes().getNotes().size() * 2.0;
 	}
 	
 	public void paint(Graphics g)
@@ -94,7 +96,7 @@ public class Game extends Applet implements KeyListener{
 				if (n.getTime()- currentTime < -200)
 				{
 					life-=10;
-					score-=10;
+					score-=2;
 					misses+=1;
 					combo=0;
 					judgement = 4;
@@ -304,7 +306,7 @@ public class Game extends Applet implements KeyListener{
 				else if (Math.abs(noteTime - tapTime) < 200)
 				{
 					life-=5;
-					score-=5;
+					score-=1;
 					bads+=1;
 					combo=0;
 					judgement = 3;

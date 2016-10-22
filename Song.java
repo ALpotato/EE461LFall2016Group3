@@ -28,7 +28,7 @@ public class Song {
 	
 	public void play()
 	{
-		trueTime = System.currentTimeMillis() + this.getNotes().getNotes().get(0).getTime() - this.getNotes().getOffset() - 1000;
+		trueTime = System.currentTimeMillis() + this.getNotes().getNotes().get(0).getTime() - this.getNotes().getOffset() + 325;//325ms to start Player
 		st.start();
 	}
 	
@@ -51,11 +51,11 @@ public class Song {
 class SongThread extends Thread
 {
 	private FileInputStream music;
+	private Player playMP3;
 	public SongThread(FileInputStream f)
 	{
 		music = f;
 	}
-	Player playMP3;
 	public void run() {
 
 		try {
@@ -67,6 +67,11 @@ class SongThread extends Thread
 	
 	public void end() {
 		playMP3.close();
+	}
+	
+	public Player getPlayer()
+	{
+		return playMP3;
 	}
 }
 
@@ -124,7 +129,6 @@ class Notefile {
 				}
 			}
 			reader.close();
-		System.out.println(n.get(0).getTime());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
