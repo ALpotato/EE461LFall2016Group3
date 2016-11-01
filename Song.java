@@ -28,7 +28,7 @@ public class Song {
 	
 	public void play()
 	{
-		trueTime = System.currentTimeMillis() + this.getNotes().getNotes().get(0).getTime() - this.getNotes().getOffset() + 325;//325ms to start Player
+		trueTime = System.currentTimeMillis() + 325;//325ms to start Player
 		st.start();
 	}
 	
