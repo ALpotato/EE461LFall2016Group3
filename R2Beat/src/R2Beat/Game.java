@@ -1,4 +1,4 @@
-package R2Beat;
+package r2beat;
 
 import java.applet.Applet;
 import java.awt.Font;
@@ -25,8 +25,8 @@ public class Game extends Applet implements KeyListener{
 	
 	int left = 65;
 	int down = 83;
-	int up = 75;
-	int right = 76;
+	int up = 75;//87 or 75
+	int right = 76;//68 or 76
 	
 	BufferedImage receptors = null;
 	BufferedImage leftArrow = null;
@@ -107,13 +107,13 @@ public class Game extends Applet implements KeyListener{
 				else
 				{
 					if(n.getTrack() == 1)
-						bufferGraphics.drawImage(leftArrow, 100, (int) (150+(n.getTime() - currentTime)*1.5), this);
+						bufferGraphics.drawImage(leftArrow, 100, (int) (150+(n.getTime() - currentTime)*1.8), this);
 					else if(n.getTrack() == 2)
-						bufferGraphics.drawImage(downArrow, 250, (int) (150+(n.getTime() - currentTime)*1.5), this);
+						bufferGraphics.drawImage(downArrow, 250, (int) (150+(n.getTime() - currentTime)*1.8), this);
 					else if(n.getTrack() == 3)
-						bufferGraphics.drawImage(upArrow, 400, (int) (150+(n.getTime() - currentTime)*1.5), this);
+						bufferGraphics.drawImage(upArrow, 400, (int) (150+(n.getTime() - currentTime)*1.8), this);
 					else if(n.getTrack() == 4)
-						bufferGraphics.drawImage(rightArrow, 550, (int) (150+(n.getTime() - currentTime)*1.5), this);
+						bufferGraphics.drawImage(rightArrow, 550, (int) (150+(n.getTime() - currentTime)*1.8), this);
 				}
 			}
 			if (judgement == 0)
