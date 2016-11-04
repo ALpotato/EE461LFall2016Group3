@@ -1,4 +1,4 @@
-package r2beat;
+package R2Beat;
 
 import java.io.BufferedReader;
 import java.io.File;
