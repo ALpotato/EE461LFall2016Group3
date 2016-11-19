@@ -16,12 +16,7 @@
         }
 
         li {
-            display: inline;
-            float: left;
             list-style: none;
-            background: #F00;
-            background-size: 100% 100%;
-            z-index: 10000000000000000;
         }
 
         .keyContainer {
@@ -36,8 +31,7 @@
         }
 
         .keyContainer p {
-            margin: 5px;
-            margin-bottom: 2px;
+            margin: 5px 5px 2px;
             width: 63px;
             height: 50px;
             font-size: 30px;
@@ -59,12 +53,31 @@
             width: 300px;
             height: 532px;
             background: #000;
-            /*
-                background: url(http://www.8king.cn/myproject-multi/music/a01.jpg);
-            */
             background-size: 100% 100%;
             border: 2px solid #fff;
             z-index: 0;
+        }
+
+        .container ul {
+            width: 75px;
+            height: 100%;
+            float: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container ul li {
+            position: absolute;
+            margin: 5px;
+            width: 65px;
+            height: 50px;
+            background-size: contain;
+            background: #000 center, center;
+            text-align: center;
+            line-height: 60px;
+            color: #fff;
+            border-radius: 4px;
+            z-index: 1000000000000;
         }
 
         #start {
@@ -82,14 +95,11 @@
             margin: auto;
             color: #fff;
             text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de;
-            /*
-                background: url(http://www.8king.cn/myproject-multi/music/acd.jpg);
-            */
             background-size: 100% 100%;
             z-index: 1000000000000;
         }
 
-        .head_name {
+        #head_name {
             font-size: 56px;
             width: 100%;
             height: 100px;
@@ -104,7 +114,7 @@
             background: rgba(0, 0, 0, 0.8);
         }
 
-        .start_inner {
+        #start_inner {
             font-size: 36px;
             width: 100%;
             height: 100px;
@@ -117,7 +127,21 @@
             z-index: 10000001;
         }
 
-        .score {
+        #loading {
+            font-size: 36px;
+            width: 100%;
+            height: 100px;
+            position: absolute;
+            left: 0;
+            top: 50px;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            z-index: 10000001;
+            display: none;
+        }
+
+        #score {
             font-size: 16px;
             position: absolute;
             right: 0;
@@ -128,11 +152,11 @@
             background: rgba(166, 226, 46, 0.5);
         }
 
-        .score:before {
+        #score:before {
             content: "Score:";
         }
 
-        .life {
+        #life {
             font-size: 16px;
             padding: 10px 15px;
             left: 0;
@@ -143,11 +167,11 @@
             position: absolute;
         }
 
-        .life:before {
+        #life:before {
             content: "Life:";
         }
 
-        .status {
+        #status {
             width: 100%;
             text-align: center;
             position: absolute;
@@ -157,8 +181,46 @@
             color: #fff;
             font-size: 40px;
             text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de;
-            /*    -webkit-animation: track 0.1s linear 1;
-                -webkit-transition: track 0.1s linear;*/
+            -webkit-animation: track 0.1s linear 1;
+            -webkit-transition: track 0.1s linear;
+        }
+
+        @-webkit-keyframes track {
+            0% {
+                transform: scale(1, 1);
+            }
+            100% {
+                transform: scale(1.3, 1.3);
+            }
+        }
+
+        .ruler01 {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.7);
+            position: absolute;
+            top: 460px;
+        }
+
+        .ruler02 {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            top: 465px;
+        }
+
+        #gameRestart {
+            font-size: 16px;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            border: 0;
+            padding: 10px 15px;
+            color: #fff;
+            z-index: 10000;
+            cursor: pointer;
+            display: none;
         }
     </style>
 </head>
@@ -169,14 +231,15 @@
 </audio>
 <div class="container" id="container">
     <div id="start">
-        <div class="head_name">R2Beat!</div>
-        <div class="start_inner">Start</div>
+        <div id="head_name">R2Beat!</div>
+        <div id="start_inner">Start</div>
     </div>
-    <div class="status" id="status"></div>
-    <div class="score" id="score">0</div>
-    <div class="life" id="life">100</div>
+    <div id="loading">loading...</div>
+    <div id="status"></div>
+    <div id="score">0</div>
+    <div id="life">100</div>
 
-    <div class="gameRestart" id="gameRestart">Restart</div>
+    <div id="gameRestart">Restart</div>
 
     <div class="ruler01"></div>
     <div class="ruler02"></div>
@@ -193,6 +256,8 @@
     window.onload = function () {
         var container = document.getElementById('container');
         var start = document.getElementById('start');
+        var loading = document.getElementById('loading');
+        var start_inner = document.getElementById('start_inner');
         var gameRestart = document.getElementById('gameRestart');
 
         var ul = container.getElementsByTagName('ul');
@@ -213,7 +278,7 @@
         var perfect = 0;
         var maxScore = 100; //TODO: is it really 100?
         var speed = 7;
-        //var timer = 0;
+        var timer = null;
         var ended = 0;
         var noteFile = [{"column": 1, "time": 190}, {"column": 1, "time": 430}, {
             "column": 1,
@@ -242,34 +307,32 @@
         }, {"column": 4, "time": 6430}, {"column": 4, "time": 6670}, {"column": 3, "time": 6790}, {
             "column": 2,
             "time": 6910
-        }, {"column": 1, "time": 7030}, {"column": 2, "time": 7150}, {"column": 3, "time": 7270}, {
-            "column": 4,
-            "time": 7390
-        }, {"column": 4, "time": 7630}, {"column": 3, "time": 7689}, {"column": 2, "time": 7749}, {
-            "column": 1,
-            "time": 7809
-        }, {"column": 4, "time": 7869}, {"column": 3, "time": 7989}, {"column": 4, "time": 8109}, {
-            "column": 2,
-            "time": 8229
-        }, {"column": 1, "time": 8349}, {"column": 2, "time": 8469}]
+        }];
 
         // create the four uls that acts as columns for the four arrows moving up
         for (var i = 0; i < 4; i++) {
             var ulChange = document.createElement('ul');
             container.appendChild(ulChange);
         }
-        start.onclick = play;
+        start_inner.onclick = play;
 
-        function generate(column) {
+        // move arrows up
+        function move(obj) {
+            clearTimeout(obj.timer);
+            clearInterval(obj.timer);
+            obj.timer = setInterval(function () {
+                if(obj.style.top < 62) {
+                    clearInterval(obj.timer);
+                }
+                obj.style.top = obj.offsetTop + speed + 'px';
+            }, 30);
+        }
+
+        function generate(column, time) {
             var liChange = document.createElement('li');
             liChange.style.background = arrow(column);
             ul[column].appendChild(liChange);
-            console.log(li.length);
-            move(liChange, function () {
-             if (li.length >= 20) {
-             EndGame();
-             }
-             });
+            liChange.timer = setTimeout(move(liChange), time);
         }
 
         function arrow(column) {
@@ -277,9 +340,9 @@
                 case 0:
                     return 'url(leftarrow.png)';
                 case 1:
-                    return 'url(uparrow.png)';
-                case 2:
                     return 'url(downarrow.png)';
+                case 2:
+                    return 'url(uparrow.png)';
                 case 3:
                     return 'url(rightarrow.png)';
             }
@@ -287,18 +350,16 @@
 
         // start game
         function play() {
-            music.play();
-            var startTime = Date.now();
             start.style.display = "none";
+            loading.style.display = "initial";
+            gameRestart.style.display = "initial";
             status.innerHTML = "";
             for (var n in noteFile) {
                 var column = parseInt(noteFile[n].column) - 1;
                 var time = parseInt(noteFile[n].time);
-                while (Date.now() < startTime + time) {
-                }
-                generate(column);
-                console.log(ul[0].children[0].offsetTop);
+                generate(column, time);
             }
+            music.play();
         }
 
         music.addEventListener("ended", function () {
@@ -309,6 +370,7 @@
 
         // end game
         function EndGame() {
+            console.log(status.innerHTML.toString());
             clearInterval(timer);
             for (var i = 0; i < li.length; i++) {
                 clearTimeout(li[i].timeout);
@@ -331,7 +393,7 @@
 
         // Core judgement functions
         function processKeyPress(n) {
-            if (ended/*!ul[n].children.length*/) {
+            if (ended == 1/*!ul[n].children.length*/) {
                 if (scoreChange == maxScore) {
                     status.innerHTML = " Score: AAA" + '<br />' + "Combo: " + maxCombo + '<br />' + "Press F to restart";
                 }
@@ -374,6 +436,9 @@
                 else if (scoreChange >= maxScore * 0.60) {
                     status.innerHTML = " Score:  D-" + '<br />' + "Combo: " + maxCombo + '<br />' + "Press F to restart";
                 }
+                else {
+                    status.innerHTML = "done";
+                }
                 EndGame();
                 return;
             }
@@ -394,6 +459,7 @@
 
         function reload() {
             document.location.reload();
+            gameRestart.style.display = "none";
         }
 
         // mouse onclick events
@@ -425,14 +491,6 @@
             }
         };
 
-        // move arrows up
-        function move(obj) {
-            clearInterval(obj.timer);
-            obj.timer = setInterval(function () {
-                obj.style.top = obj.offsetTop + speed + 'px';
-            }, 30);
-        }
-
         // obtain note location
         function getPos(obj) {
             var left = 0;
@@ -445,7 +503,7 @@
             return {'left': left, 'top': top};
         }
 
-        // processKeyPress if scores
+        // TODO: this totally failed
         function coll(arrow, receptor) {
             //var tapTime = Date.now() - noteFile.trueTime;
             var arrowL = getPos(arrow).left;
@@ -457,14 +515,10 @@
             var receptorR = getPos(receptor).left + receptor.offsetWidth;
             var receptorT = getPos(receptor).top;
             var receptorB = getPos(receptor).top + receptor.offsetHeight;
-
             if (arrowL > receptorR || arrowR < receptorL) {
                 // status.innerHTML="WRONG!";
                 return false;
             }
-            console.log("distance from the left:" + arrowL);
-            console.log("distance from the top:" + arrowB);
-
             if (arrowB >= 485 && arrowB <= 528) {
                 status.innerHTML = "Perfect!";
                 scoreChange += 2;
