@@ -23,7 +23,9 @@ li {
     width: 300px;
     height: 532px;
     background: #000;
+    /*
     background: url(http://www.8king.cn/myproject-multi/music/a01.jpg);
+    */
     background-size: 100% 100%;
     border: 2px solid #fff;
     z-index: -100;
@@ -47,7 +49,9 @@ li {
     z-index: 1000;
     */
     text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de;
+    /*
     background: url(http://www.8king.cn/myproject-multi/music/acd.jpg);
+    */
     background-size: 100% 100%;
     z-index: 1000000000000;
 }
@@ -95,7 +99,7 @@ li {
     content: "Score:";
 }
 
-.time {
+.life {
     font-size: 16px;
     padding: 10px 15px;
     left: 0;
@@ -106,7 +110,7 @@ li {
     position: absolute;
 }
 
-.time:before {
+.life:before {
     content: "Time:";
 }
 
@@ -138,21 +142,6 @@ li {
     bottom: 0;
     width: 100%;
     height: 62px;
-    z-index: 1000000000;
-}
-
-.keyContainer p {
-    margin: 5px 5px 2px; /* margin: 5px; margin-bottom: 2px; */
-    width: 63px;
-    height: 50px;
-    font-size: 30px;
-    line-height: 50px;
-    text-align: center;
-    float: left;
-    color: #fff;
-    border: 1px solid #fff;
-    background: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
     z-index: 1000000000;
 }
 
@@ -193,18 +182,6 @@ li {
     top: 465px;
 }
 
-.gamePause {
-    font-size: 16px;
-    position: absolute;
-    right: 0;
-    top: 100px;
-    border: 0;
-    padding: 10px 15px;
-    color: #fff;
-    z-index: 2000000;
-
-}
-
 .gameRestart {
     font-size: 16px;
     position: absolute;
@@ -217,7 +194,6 @@ li {
     cursor: pointer;
 }
 
-/*check media*/
 @media screen and (max-width: 420px) {
     .container {
         overflow: hidden;
@@ -230,7 +206,9 @@ li {
         width: 100%;
         height: 100%;
         background: #000;
+        /*
         background: url(http://www.8king.cn/myproject-multi/music/a01.jpg);
+        */
         background-size: 100% 100%;
         z-index: -100;
     }
@@ -246,7 +224,9 @@ li {
         border: 0;
         color: #fff;
         z-index: 10000000;
+        /*
         background: url(http://www.8king.cn/myproject-multi/music/acd.jpg);
+        */
         background-size: 100% 100%;
     }
 
@@ -324,25 +304,6 @@ li {
         z-index: 1000;
     }
 
-    .keyContainer p {
-        margin: 0 3px 2px 0;
-        width: 23.5%;
-        height: 85px;
-        font-size: 30px;
-        line-height: 85px;
-        text-align: center;
-        float: left;
-        color: #fff;
-        border: 1px solid #fff;
-        background: rgba(255, 255, 255, 0.5);
-        cursor: pointer;
-        z-index: 2000;
-    }
-
-    .keyContainer p:last-child {
-        margin-bottom: 0;
-    }
-
     .container ul {
         width: 23.5%;
         margin-right: 5px;
@@ -361,7 +322,7 @@ li {
         margin: 5px;
         width: 100%;
         height: 50px;
-        background: -webkit-linear-gradient(top, #ccc, #000);
+        background: -webkit-linear-gradient(top, #ccc, #000); /* change this to arrows */
         text-align: center;
         line-height: 60px;
         color: #fff;

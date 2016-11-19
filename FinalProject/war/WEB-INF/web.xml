@@ -4,12 +4,20 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet>
-        <servlet-name>KeySetting</servlet-name>
-        <servlet-class>r2beat.servlets.KeySettingServlet</servlet-class>
+        <servlet-name>UI</servlet-name>
+        <servlet-class>r2beat.servlets.UIServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>KeySetting</servlet-name>
-        <url-pattern>/keySetting</url-pattern>
+        <servlet-name>UI</servlet-name>
+        <url-pattern>/ui</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Setting</servlet-name>
+        <servlet-class>r2beat.servlets.SettingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Setting</servlet-name>
+        <url-pattern>/Setting</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>LeaderBoard</servlet-name>
@@ -19,23 +27,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>LeaderBoard</servlet-name>
         <url-pattern>/leaderBoard</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>UI</servlet-name>
-        <servlet-class>r2beat.servlets.UIServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UI</servlet-name>
-        <url-pattern>/ui</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>SpeedSetting</servlet-name>
-        <servlet-class>r2beat.servlets.SpeedSettingServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SpeedSetting</servlet-name>
-        <url-pattern>/speedSetting</url-pattern>
-    </servlet-mapping>
+
     <welcome-file-list>
-        <welcome-file>ui.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 </web-app>
