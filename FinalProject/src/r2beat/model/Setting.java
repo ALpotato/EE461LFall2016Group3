@@ -1,23 +1,28 @@
 package r2beat.model;
 
-/**
- * Created by Angzhi on 11/11/2016.
- */
-public class Setting {
-    int left;
-    int top;
-    int bottom;
-    int right;
-    int reset;
-    int difficulty;
+import com.google.appengine.api.users.User;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
 
-    public Setting() {
+@Entity
+public class Setting {
+
+    @Id
+    Long id;
+    private int left;
+    private int up;
+    private int down;
+    private int right;
+
+    private Setting() {
+
+    }
+    public Setting(User user) {
         left = 81;
-        top = 87;
-        bottom = 79;
+        up = 87;
+        down = 79;
         right = 80;
-        reset = 70;
-        difficulty = 0;
+        id = (long) user.hashCode();
     }
 
     public int getLeft() {
@@ -28,20 +33,20 @@ public class Setting {
         this.left = left;
     }
 
-    public int getTop() {
-        return top;
+    public int getUp() {
+        return up;
     }
 
-    public void setTop(int top) {
-        this.top = top;
+    public void setUp(int up) {
+        this.up = up;
     }
 
-    public int getBottom() {
-        return bottom;
+    public int getDown() {
+        return down;
     }
 
-    public void setBottom(int bottom) {
-        this.bottom = bottom;
+    public void setDown(int down) {
+        this.down = down;
     }
 
     public int getRight() {
@@ -50,21 +55,5 @@ public class Setting {
 
     public void setRight(int right) {
         this.right = right;
-    }
-
-    public int getReset() {
-        return reset;
-    }
-
-    public void setReset(int reset) {
-        this.reset = reset;
-    }
-
-    public int getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
     }
 }
