@@ -2,6 +2,7 @@ package r2beat.model;
 
 /**
  * Song titles to sort the score lists
+ * additional songs should be added in here
  */
 public enum Song {
     EXTRATONE_PIRATES(0, "Extratone Pirates"),

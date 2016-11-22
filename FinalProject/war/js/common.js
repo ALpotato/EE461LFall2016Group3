@@ -170,7 +170,10 @@ window.onload = function () {
         $.ajax({
             type: "POST",
             url: '/leaderBoard',
-            data: '{"score":' + scoreChange + ', "perfect":' + perfect + ', "great":' + great + ', "good":' + good + ', "bad":' + bad + ', "maxCombo":' + maxCombo + ', "songIndex":' + songIndex + '}'
+            data: '{"score":' + scoreChange + ', "perfect":' + perfect + ', "great":' + great + ', "good":' + good + ', "bad":' + bad + ', "maxCombo":' + maxCombo + ', "songIndex":' + songIndex + '}',
+            success: function(){
+                alert("score information uploaded successfully");
+            }
         });
     }
 

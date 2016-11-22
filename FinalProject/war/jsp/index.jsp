@@ -13,9 +13,7 @@
         <div class="head_name">R2Beat!</div>
         <div class="start_inner"><a href="${pageContext.request.contextPath}/ui">Start</a></div>
         <div class="setting_inner"><a href="${pageContext.request.contextPath}/Setting">Settings</a></div>
-<%--
         <div class="leader_board"><a href="${pageContext.request.contextPath}/leaderBoard">Leader Board</a></div>
---%>
     </div>
     <div class="login">
         <c:choose>

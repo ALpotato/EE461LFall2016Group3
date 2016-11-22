@@ -7,6 +7,7 @@
 <body>
 <%-- TODO: make this prettier...so ugly now....--%>
 <p>Choose your Key Settings</p>
+<p>***remember, you have to sign in to save the settings***</p>
 <form action="${pageContext.request.contextPath}/Setting" method="post">
     <label>
         <input list="left" name="left">

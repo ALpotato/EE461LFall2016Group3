@@ -11,13 +11,14 @@
 </head>
 <body>
 <div class="container" id="container">
-    <c:if test="${not empty Songs}">
+    <c:if test="${not empty songs}">
         <%-- TODO: make this prettier...so ugly now....--%>
         <div id="song_select">
         <label>Select which song you would like to play:</label>
         <form action="${pageContext.request.contextPath}/ui" method="post">
-            <c:forEach items="${Songs}" var="song">
+            <c:forEach items="${songs}" var="song">
                 <input type="submit" name="song_name" value="${song.songName}">
+                <br>
             </c:forEach>
         </form>
     </div>
@@ -50,7 +51,7 @@
     var right = ${right};
     var songIndex = ${songIndex};
 </script>
-<!-- system sound effects -->
+<!-- music selected by player -->
 <audio id="music" preload="auto">
     <source src="${pageContext.request.contextPath}/music/${songName}" type="audio/ogg">
 </audio>

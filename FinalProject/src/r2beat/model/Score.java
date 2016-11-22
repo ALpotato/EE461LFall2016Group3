@@ -9,8 +9,9 @@ public class Score {
     private int bad;
     private int miss;
     private int maxCombo;
+    private String userId;
 
-    public Score() {
+    public Score(String id) {
         score = 0.0;
         perfect = 0;
         great = 0;
@@ -18,6 +19,7 @@ public class Score {
         bad = 0;
         miss = 0;
         maxCombo = 0;
+        userId = id;
     }
 
     public double getScore() {
@@ -74,5 +76,13 @@ public class Score {
 
     public void setMaxCombo(int maxCombo) {
         this.maxCombo = maxCombo;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

@@ -4,9 +4,8 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.Ref;
-import r2beat.model.GameModel;
 import r2beat.model.NoteFile;
+import r2beat.model.ScoreList;
 import r2beat.model.Setting;
 import r2beat.model.Song;
 
@@ -21,41 +20,47 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 public class UIServlet extends HttpServlet {
     static {
-        ObjectifyService.register(GameModel.class);
+        ObjectifyService.register(ScoreList.class);
     }
 
+    //happens when player picked the song of choice
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = getUser();
-        GameModel model = new GameModel(user);
-        String songName = req.getParameter("song_name") + ".mp3";
-        NoteFile file = new NoteFile(new File(songName));
-        ofy().save().entities(model).now();
-        req.setAttribute("songName", songName);
+        String songName = req.getParameter("song_name");
         for(Song song : Song.values()){
-            if(song.getSongName().equals(req.getParameter("song_name"))) {
+            if(song.getSongName().equals(songName)) {
                 req.setAttribute("songIndex", song.getIndex());
+                if(ofy().load().type(ScoreList.class).id(song.getIndex()).get() == null) {
+                    ScoreList list = new ScoreList(String.valueOf(song.getIndex()));
+                    ofy().save().entities(list).now();
+                }
             }
         }
+        NoteFile file = new NoteFile(new File(songName + ".mp3"));
+        req.setAttribute("songName", songName + ".mp3");
         req.setAttribute("noteFile", file.getNotesJSON());
-        if (ofy().load().type(Setting.class).id(model.id) == null) {
-            req.setAttribute("left", 81);
-            req.setAttribute("down", 87);
-            req.setAttribute("up", 79);
-            req.setAttribute("down", 80);
-        } else {
-            Ref<Setting> setting = ofy().load().type(Setting.class).id(model.id);
-            req.setAttribute("left", setting.getValue().getLeft());
-            req.setAttribute("down", setting.getValue().getDown());
-            req.setAttribute("up", setting.getValue().getUp());
-            req.setAttribute("down", setting.getValue().getRight());
+        User user = getUser();
+        if(user != null) {
+            Setting setting = ofy().load().type(Setting.class).id(user.getUserId()).get();
+            if (setting == null) {
+                req.setAttribute("left", 81);
+                req.setAttribute("down", 87);
+                req.setAttribute("up", 79);
+                req.setAttribute("down", 80);
+            } else {
+                req.setAttribute("left", setting.left);
+                req.setAttribute("down", setting.down);
+                req.setAttribute("up", setting.up);
+                req.setAttribute("down", setting.right);
+            }
         }
         req.getRequestDispatcher("/jsp/ui.jsp").forward(req, resp);
     }
 
+    //happens when selected play in home page
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws  ServletException, IOException {
-        req.setAttribute("Songs", Song.values());
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("songs", Song.values());
         req.getRequestDispatcher("/jsp/ui.jsp").forward(req, resp);
     }
 
