@@ -24,7 +24,7 @@ window.onload = function () {
     var ended = 1;
     var startTime = Date.now();
     var noteArray = [];
-    var maxScore = noteFile.length * 2;
+    var maxScore = noteArray.length * 2;
 
     // create the four uls that acts as columns for the four arrows moving up
     for (var i = 0; i < 4; i++) {
@@ -41,6 +41,10 @@ window.onload = function () {
 
     // move arrows up
     function move() {
+    	if ((perfect + great + good + bad + miss == noteArray.length) && ended == 0)
+    	{
+    		end();
+    	}
         for (var n = 0; n < noteArray.length; n++) {
             var time = Date.now();
             var t1 = time - startTime;
@@ -78,13 +82,13 @@ window.onload = function () {
     function arrow(column) {
         switch (column) {
             case 0:
-                return 'url(leftArrow.png)';
+                return 'url(/images/leftArrow.png)';
             case 1:
-                return 'url(downArrow.png)';
+                return 'url(/images/downArrow.png)';
             case 2:
-                return 'url(upArrow.png)';
+                return 'url(/images/upArrow.png)';
             case 3:
-                return 'url(rightArrow.png)';
+                return 'url(/images/rightArrow.png)';
         }
     }
 
@@ -92,7 +96,7 @@ window.onload = function () {
     function play() {
         startTime = Date.now();
         ended = 0;
-        start.style.display = "none";
+        start_inner.style.display = "none";
         gameRestart.style.display = "initial";
         status.innerHTML = "";
         for (var n in noteFile) {
@@ -100,12 +104,16 @@ window.onload = function () {
             var time = parseInt(noteFile[n].time);
             generate(column, time);
         }
+        maxScore = noteArray.length * 2;
         setInterval(move, 10);
         music.play();
     }
 
-    music.addEventListener("ended", function () {
+    function end() {
+        console.log("ended");
+        ended = 1;
         music.currentTime = 0;
+        music.pause();
         if (scoreChange == maxScore) {
             status.innerHTML = " Grade: AAA" + '<br />' + "Combo: " + maxCombo + '<br />' + "Press R to restart";
         }
@@ -149,12 +157,10 @@ window.onload = function () {
             status.innerHTML = " Grade:  D-" + '<br />' + "Combo: " + maxCombo + '<br />' + "Press R to restart";
         }
         else {
-            status.innerHTML = "done";
+            status.innerHTML = " Grade:  E" + '<br />' + "Combo: " + maxCombo + '<br />' + "Press R to restart";
         }
         EndGame();
-        ended = 1;
-        console.log("ended");
-    });
+    }
 
     // end game
     function EndGame() {
@@ -170,6 +176,7 @@ window.onload = function () {
         $.ajax({
             type: "POST",
             url: '/leaderBoard',
+            dataType: 'json',
             data: '{"score":' + scoreChange + ', "perfect":' + perfect + ', "great":' + great + ', "good":' + good + ', "bad":' + bad + ', "maxCombo":' + maxCombo + ', "songIndex":' + songIndex + '}',
             success: function(){
                 alert("score information uploaded successfully");
@@ -181,7 +188,7 @@ window.onload = function () {
     function lifeCheck() {
         if (lifeChange <= 0) {
             life.innerHTML = "FAIL";
-            status.innerHTML = " Score: F" + '<br />' + "Press R to restart";
+            status.innerHTML = " Grade: F" + '<br />' + "Press R to restart";
             EndGame();
         }
     }
