@@ -24,7 +24,7 @@
     </div>
 </div>
 </c:if>
-<c:if test="${not empty songName}">
+<c:if test="${not empty songName1}">
     <div id="start_inner">Start!</div>
     <div id="status"></div>
     <div id="score">0</div>
@@ -53,7 +53,7 @@
 </script>
 <!-- music selected by player -->
 <audio id="music" preload="auto">
-    <source src="${pageContext.request.contextPath}/music/${songName}" type="audio/ogg">
+    <source src="${pageContext.request.contextPath}/music/${songName2}" type="audio/mpeg">
 </audio>
 </c:if>
 </body>

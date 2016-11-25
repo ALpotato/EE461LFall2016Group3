@@ -36,8 +36,9 @@ public class UIServlet extends HttpServlet {
                 }
             }
         }
-        NoteFile file = new NoteFile(new File(songName + ".mp3"));
-        req.setAttribute("songName", songName + ".mp3");
+        NoteFile file = new NoteFile(new File(songName + ".sm"));
+        req.setAttribute("songName1", songName + ".sm");
+        req.setAttribute("songName2", songName + ".mp3");
         req.setAttribute("noteFile", file.getNotesJSON());
         User user = getUser();
         if(user != null) {
@@ -46,13 +47,20 @@ public class UIServlet extends HttpServlet {
                 req.setAttribute("left", 81);
                 req.setAttribute("down", 87);
                 req.setAttribute("up", 79);
-                req.setAttribute("down", 80);
+                req.setAttribute("right", 80);
             } else {
                 req.setAttribute("left", setting.left);
                 req.setAttribute("down", setting.down);
                 req.setAttribute("up", setting.up);
-                req.setAttribute("down", setting.right);
+                req.setAttribute("right", setting.right);
             }
+        }
+        else
+        {
+               req.setAttribute("left", 81);
+               req.setAttribute("down", 87);
+               req.setAttribute("up", 79);
+               req.setAttribute("right", 80);
         }
         req.getRequestDispatcher("/jsp/ui.jsp").forward(req, resp);
     }
