@@ -42,9 +42,9 @@
     <orderEntry type="library" exported="" name="jquery" level="application" />
     <orderEntry type="library" exported="" name="com.google.appengine:appengine-api-1.0-sdk:Release" level="project" />
     <orderEntry type="library" exported="" name="com.googlecode.objectify:objectify:Release" level="project" />
-    <orderEntry type="library" exported="" name="javax.servlet:jstl:Release" level="project" />
     <orderEntry type="library" exported="" name="javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" exported="" name="com.google.appengine:appengine-endpoints:Release" level="project" />
     <orderEntry type="library" name="JPA 1.0-JPA 1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="javax.servlet:jstl:Release" level="project" />
   </component>
 </module>

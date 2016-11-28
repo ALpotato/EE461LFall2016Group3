@@ -33,7 +33,7 @@ public class SettingServlet extends HttpServlet {
                     //FIXME:make sure this actually saves to the setting object on objectify
                     setKeys(req, setting);
                 } else {
-                    setting = new Setting(user.getNickname());
+                    setting = new Setting(id);
                     setKeys(req, setting);
                     ofy().save().entities(setting).now();
                 }
@@ -43,10 +43,10 @@ public class SettingServlet extends HttpServlet {
     }
 
     private void setKeys(HttpServletRequest req, Setting setting) {
-        setting.left = (Integer.getInteger(req.getAttribute("left").toString()));
-        setting.down = (Integer.getInteger(req.getAttribute("down").toString()));
-        setting.up = (Integer.getInteger(req.getAttribute("up").toString()));
-        setting.right = (Integer.getInteger(req.getAttribute("right").toString()));
+        setting.left = req.getParameter("left").charAt(0);
+        setting.down = req.getParameter("down").charAt(0);
+        setting.up = req.getParameter("up").charAt(0);
+        setting.right = req.getParameter("right").charAt(0);
     }
 
     private User getUser() {

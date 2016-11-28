@@ -6,7 +6,8 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Welcome To R2Beat!</title>
-    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css"/></head>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css"/>
+</head>
 <body>
 <div class="container" id="LB_container">
     <div id="content">
@@ -15,11 +16,14 @@
                 <h1>No Scores on LeaderBoard yet</h1>
             </c:when>
             <c:otherwise>
-                <c:forEach var="i" begin="0" end="${fn:length(songs)}">
-                    <h1>High Scores for ${songs[i]}:</h1>
+                <c:forEach var="i" begin="0" end="${fn:length(songs) - 1}">
+                    <h4>High Scores for ${songs[i]}:</h4>
                     <c:choose>
-                        <c:when test="${5 gt fn:length(leaderBoard[i])}">
-                            <c:forEach items="${leaderBoard[i]}" var="score">
+                        <c:when test="${empty leaderBoard[i].scoreList}">
+                            <h5>No Scores for Song ${songs[i]} yet</h5>
+                        </c:when>
+                        <c:when test="${5 gt fn:length(leaderBoard[i].scoreList)}">
+                            <c:forEach items="${leaderBoard[i].scoreList}" var="score">
                                 <div id="Scores">
                                     <p>${score.score}</p>
                                     <p>${score.perfect}</p>
@@ -32,9 +36,15 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <c:forEach var="i" begin="0" end="4">
+                            <c:forEach var="j" begin="0" end="4">
                                 <div id="Scores">
-                                    <p>${blogs[i].content}</p>
+                                    <p>${leaderBoard[i].scoreList[j].score}</p>
+                                    <p>${leaderBoard[i].scoreList[j].perfect}</p>
+                                    <p>${leaderBoard[i].scoreList[j].great}</p>
+                                    <p>${leaderBoard[i].scoreList[j].good}</p>
+                                    <p>${leaderBoard[i].scoreList[j].bad}</p>
+                                    <p>${leaderBoard[i].scoreList[j].miss}</p>
+                                    <p>${leaderBoard[i].scoreList[j].maxCombo}</p>
                                 </div>
                             </c:forEach>
                         </c:otherwise>
@@ -43,6 +53,9 @@
                 <p>*** only top 5 for each song are shown here ***</p>
             </c:otherwise>
         </c:choose>
+    </div>
+    <div id="return_main">
+        <a href="/">Return</a>
     </div>
 </div>
 </body>

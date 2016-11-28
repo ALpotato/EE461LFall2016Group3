@@ -1,12 +1,11 @@
 package r2beat.model;
 
-import com.google.appengine.repackaged.com.google.gson.Gson;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -21,7 +20,7 @@ public class ScoreList {
     }
 
     public ScoreList(String id) {
-        this.scoreList = new LinkedList<>();
+        this.scoreList = new ArrayList<>();
         this.id = id;
     }
 
@@ -34,7 +33,7 @@ public class ScoreList {
     }
 
     private List<Score> sortList() {
-        if (!scoreList.isEmpty()) {
+        if (scoreList != null && !scoreList.isEmpty()) {
             Collections.sort(scoreList, new Comparator<Score>() {
                 @Override
                 public int compare(Score s1, Score s2) {
