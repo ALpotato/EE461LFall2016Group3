@@ -29,7 +29,7 @@
     <div id="status"></div>
     <div id="score">0</div>
     <div id="life">100</div>
-    <div class="inGameButtons" id="back_to_main">Back</div>
+    <div class="inGameButtons" id="back_to_main"><a href="${pageContext.request.contextPath}/index">Back</div>
     <div class="inGameButtons" id="game_restart">Restart</div>
 
     <div class="keyContainer">

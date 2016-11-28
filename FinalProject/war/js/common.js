@@ -1,5 +1,5 @@
 window.onload = function () {
-    var container = document.getElementById('container');
+    var container = document.getElementsByClassName('container')[0];
     var start = document.getElementById('start');
     var start_inner = document.getElementById('start_inner');
     var game_restart = document.getElementById('game_restart');
@@ -61,7 +61,6 @@ window.onload = function () {
             }
             if ((noteArray[n].offsetTop) < -100) {
                 ul[noteArray[n].column].removeChild(ul[noteArray[n].column].children[0]);
-                noteArray.splice(n, 1);
                 status.innerHTML = "Miss";
                 miss += 1;
                 combo = 0;
@@ -179,7 +178,6 @@ window.onload = function () {
         for (i = 0; i < ul.length; i++) {
             ul[i].innerHTML = '';
         }
-        scoreChange = 0;
         //TODO: check if this ajax function work
         //posting the current score up to scoreboard
         $.ajax({
@@ -192,6 +190,7 @@ window.onload = function () {
                 great: great,
                 good: good,
                 bad: bad,
+                miss: miss,
                 maxCombo: maxCombo,
                 songIndex: songIndex
             },
@@ -199,9 +198,10 @@ window.onload = function () {
                 alert("score information uploaded successfully");
             },
             error: function () {
-                alert("fail");
+                alert("failed to upload");
             }
         });
+        scoreChange = 0;
     }
 
     // check remaining life

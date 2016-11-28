@@ -41,7 +41,7 @@ public class LeaderBoardServlet extends HttpServlet {
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
         String songIndex = req.getParameter("songIndex");
-        List<Score> scoreList = ofy().load().type(ScoreList.class).id(songIndex).now().getScoreList();
+        List<Score> scoreList = ofy().load().type(ScoreList.class).id(songIndex).get().getScoreList();
         Score score = new Score(user.getNickname());
         setScore(req, score);
         if(scoreList.isEmpty()) {

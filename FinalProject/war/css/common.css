@@ -59,7 +59,7 @@ li {
 }
 
 .container ul li {
-    position: relative;
+    position: absolute;
     margin: 0;
     width: 100px;
     height: 100px;
@@ -67,7 +67,6 @@ li {
     background: #FFFFFF center, center;
     text-align: center;
     line-height: 60px;
-    border-radius: 4px;
     z-index: 10;
 }
 

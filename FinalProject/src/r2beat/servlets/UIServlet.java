@@ -25,7 +25,7 @@ public class UIServlet extends HttpServlet {
         for (Song song : Song.values()) {
             if (song.getSongName().equals(songName)) {
                 req.setAttribute("songIndex", song.getIndex());
-                if (ofy().load().type(ScoreList.class).id(song.getIndex()).now() == null) {
+                if (ofy().load().type(ScoreList.class).id(song.getIndex()).get() == null) {
                     ScoreList list = new ScoreList(String.valueOf(song.getIndex()));
                     ofy().save().entities(list).now();
                 }
@@ -36,7 +36,7 @@ public class UIServlet extends HttpServlet {
         req.setAttribute("noteFile", file.getNotesJSON());
         User user = getUser();
         if (user != null) {
-            Setting setting = ofy().load().type(Setting.class).id(user.getUserId()).now();
+            Setting setting = ofy().load().type(Setting.class).id(user.getUserId()).get();
             if (setting == null) {
                 req.setAttribute("left", 81);
                 req.setAttribute("down", 87);

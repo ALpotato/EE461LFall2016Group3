@@ -28,7 +28,7 @@ public class SettingServlet extends HttpServlet {
             User user = getUser();
             if (user != null) {
                 String id = user.getNickname();
-                Setting setting = ofy().load().type(Setting.class).id(id).now();
+                Setting setting = ofy().load().type(Setting.class).id(id).get();
                 if (setting != null) {
                     //FIXME:make sure this actually saves to the setting object on objectify
                     setKeys(req, setting);
