@@ -22,6 +22,7 @@ window.onload = function () {
     var great = 0;
     var perfect = 0;
     var ended = 1;
+    var speed = 1.0;
     var startTime = Date.now();
     var noteArray = [];
     var maxScore = noteArray.length * 2;
@@ -59,7 +60,7 @@ window.onload = function () {
             if ((noteArray[n].time - t1) > 1000) {
                 break;
             }
-            if ((noteArray[n].offsetTop) < -100) {
+            if ((noteArray[n].offsetTop) < (100 - (200*speed))) {
                 ul[noteArray[n].column].removeChild(ul[noteArray[n].column].children[0]);
                 status.innerHTML = "Miss";
                 miss += 1;
@@ -71,7 +72,7 @@ window.onload = function () {
                 lifeCheck();
             }
             else {
-                noteArray[n].style.top = 100 + noteArray[n].time - t1 + 'px';
+                noteArray[n].style.top = 100 + (noteArray[n].time - t1)*speed + 'px';
             }
         }
     }
@@ -224,7 +225,8 @@ window.onload = function () {
         if (arrowL > receptorR || arrowR < receptorL) {
             return false;
         }
-        if (arrowT >= 50 && arrowT <= 150) {
+        var off = Math.abs(100-arrowT)/speed;
+        if (off <= 50) {
             status.innerHTML = "Perfect!";
             scoreChange += 2;
             perfect += 1;
@@ -235,7 +237,7 @@ window.onload = function () {
             ul[n].removeChild(ul[n].children[0]);
             scoreTag.innerHTML = scoreChange;
         }
-        else if (arrowT >= 0 && arrowT <= 200) {
+        else if (off <= 100) {
             status.innerHTML = "Great!";
             scoreChange += 1;
             great += 1;
@@ -246,13 +248,13 @@ window.onload = function () {
             ul[n].removeChild(ul[n].children[0]);
             scoreTag.innerHTML = scoreChange;
         }
-        else if (arrowT >= -50 && arrowT <= 250) {
+        else if (off <= 150) {
             status.innerHTML = "Good";
             good += 1;
             combo += 1;
             ul[n].removeChild(ul[n].children[0]);
         }
-        else if (arrowT >= -100 && arrowT <= 300) {
+        else if (off <= 200) {
             status.innerHTML = "Bad";
             bad += 1;
             combo = 0;
