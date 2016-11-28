@@ -3,6 +3,9 @@ package r2beat.servlets;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.googlecode.objectify.ObjectifyService;
+import r2beat.model.ScoreList;
+import r2beat.model.Setting;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class IndexServlet extends HttpServlet {
+    static {
+        ObjectifyService.register(ScoreList.class);
+        ObjectifyService.register(Setting.class);
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //TODO: probably dont need this....
     }

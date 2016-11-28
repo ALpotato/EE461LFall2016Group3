@@ -5,7 +5,7 @@ html, body, ul, li, p, a, input, div {
 }
 
 body {
-    background: rgb(39, 40, 34);
+    background: #FFFFFF;
 }
 
 li {
@@ -17,8 +17,8 @@ li {
     top: 100px;
     width: 100%;
     height: 100px;
-    z-index: 1000000000;
-    background: #000;
+    z-index: 5;
+    background: #FFFFFF;
     background: url(/images/receptors.png);
     background-size: 100% 100%;
 }
@@ -32,7 +32,7 @@ li {
     text-align: center;
     float: left;
     cursor: pointer;
-    z-index: 1000000000;
+    z-index: 9;
 }
 
 .container {
@@ -45,10 +45,9 @@ li {
     margin: 0;
     width: 400px;
     height: 1000px;
-    background: #000;
+    background: #FFFFFF;
     background-size: 100% 100%;
-    border: 2px solid #fff;
-    z-index: 0;
+    border: 2px solid rgb(72, 53, 255);
 }
 
 .container ul {
@@ -60,77 +59,77 @@ li {
 }
 
 .container ul li {
-    position: absolute;
+    position: relative;
     margin: 0;
     width: 100px;
     height: 100px;
     background-size: contain;
-    background: #000 center, center;
+    background: #FFFFFF center, center;
     text-align: center;
     line-height: 60px;
-    color: #fff;
     border-radius: 4px;
-    z-index: 1000000000000;
+    z-index: 10;
 }
 
 #start {
     width: 100%;
     height: 100%;
-    line-height: 300px;
+    line-height: 200px;
     text-align: center;
     cursor: pointer;
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
     border: 0;
     margin: auto;
-    color: #fff;
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de;
+    color: #000;
+    text-shadow: 0 0 5px #000, 0 0 10px #000, 0 0 15px #000, 0 0 40px #ff00de, 0 0 70px #ff00de;
     background-size: 100% 100%;
-    z-index: 1000000000000;
 }
 
 #head_name {
     font-size: 56px;
     width: 100%;
     height: 100px;
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
     right: 0;
     bottom: 150px;
     margin: auto;
-    z-index: 10000001;
+    z-index: 12;
     text-shadow: none;
-    background: rgba(0, 0, 0, 0.8);
 }
 
 #start_inner {
     font-size: 36px;
     width: 100%;
     height: 100px;
-    position: absolute;
+    position: relative;
     left: 0;
-    top: 50px;
+    top: 440px;
     right: 0;
     bottom: 0;
-    margin: auto;
-    z-index: 10000001;
+    margin: 0;
+    color: #ff6232;
+    text-align: center;
+    text-shadow: 0 0 1px #ff6227, 0 0 5px #ff5820, 0 0 10px #ff3a1d, 0 0 20px #ff2214, 0 0 40px #ff0000;
+    z-index: 11;
 }
 
 #loading {
     font-size: 36px;
     width: 100%;
     height: 100px;
-    position: absolute;
+    position: relative;
     left: 0;
     top: 50px;
     right: 0;
     bottom: 0;
     margin: auto;
-    z-index: 10000001;
+    z-index: 11;
     display: none;
 }
 
@@ -141,8 +140,8 @@ li {
     bottom: 0;
     border: 0;
     padding: 10px 15px;
-    color: #fff;
-    background: rgba(166, 226, 46, 0.5);
+    color: #000;
+    background: rgb(63, 84, 255);
 }
 
 #score:before {
@@ -155,7 +154,7 @@ li {
     left: 0;
     bottom: 0;
     border: 0;
-    color: #fff;
+    color: #000;
     background: rgba(249, 38, 76, 0.5);
     position: absolute;
 }
@@ -167,13 +166,13 @@ li {
 #status {
     width: 100%;
     text-align: center;
-    position: absolute;
+    position: relative;
     right: 0;
-    top: 800px;
+    top: 400px;
     border: 0;
-    color: #fff;
+    color: #000;
     font-size: 40px;
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de;
+    text-shadow: 0 0 5px #000, 0 0 10px #000, 0 0 15px #000, 0 0 40px #ff00de, 0 0 70px #ff00de;
     -webkit-animation: track 0.1s linear 1;
     -webkit-transition: track 0.1s linear;
 }
@@ -187,15 +186,30 @@ li {
     }
 }
 
-#gameRestart {
+.inGameButtons {
     font-size: 16px;
     position: absolute;
     right: 0;
-    bottom: 50px;
     border: 0;
     padding: 10px 15px;
-    color: #fff;
-    z-index: 10000;
+    color: #000;
+    z-index: 20;
     cursor: pointer;
     display: none;
+}
+
+#game_restart {
+    bottom: 50px
+}
+
+#back_to_main {
+    bottom: 120px
+}
+
+.mainMenuButtons {
+    position: relative;
+}
+
+.songs {
+    position: relative;
 }

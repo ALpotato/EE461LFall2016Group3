@@ -3,7 +3,6 @@ package r2beat.servlets;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.googlecode.objectify.ObjectifyService;
 import r2beat.model.NoteFile;
 import r2beat.model.ScoreList;
 import r2beat.model.Setting;
@@ -19,30 +18,25 @@ import java.io.IOException;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 public class UIServlet extends HttpServlet {
-    static {
-        ObjectifyService.register(ScoreList.class);
-    }
-
     //happens when player picked the song of choice
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String songName = req.getParameter("song_name");
-        for(Song song : Song.values()){
-            if(song.getSongName().equals(songName)) {
+        for (Song song : Song.values()) {
+            if (song.getSongName().equals(songName)) {
                 req.setAttribute("songIndex", song.getIndex());
-                if(ofy().load().type(ScoreList.class).id(song.getIndex()).get() == null) {
+                if (ofy().load().type(ScoreList.class).id(song.getIndex()).now() == null) {
                     ScoreList list = new ScoreList(String.valueOf(song.getIndex()));
                     ofy().save().entities(list).now();
                 }
             }
         }
-        NoteFile file = new NoteFile(new File(songName + ".sm"));
-        req.setAttribute("songName1", songName + ".sm");
-        req.setAttribute("songName2", songName + ".mp3");
+        NoteFile file = new NoteFile(new File("notefiles/" + songName + ".sm"));
+        req.setAttribute("songName", songName);
         req.setAttribute("noteFile", file.getNotesJSON());
         User user = getUser();
-        if(user != null) {
-            Setting setting = ofy().load().type(Setting.class).id(user.getUserId()).get();
+        if (user != null) {
+            Setting setting = ofy().load().type(Setting.class).id(user.getUserId()).now();
             if (setting == null) {
                 req.setAttribute("left", 81);
                 req.setAttribute("down", 87);
@@ -54,13 +48,11 @@ public class UIServlet extends HttpServlet {
                 req.setAttribute("up", setting.up);
                 req.setAttribute("right", setting.right);
             }
-        }
-        else
-        {
-               req.setAttribute("left", 81);
-               req.setAttribute("down", 87);
-               req.setAttribute("up", 79);
-               req.setAttribute("right", 80);
+        } else {
+            req.setAttribute("left", 81);
+            req.setAttribute("down", 87);
+            req.setAttribute("up", 79);
+            req.setAttribute("right", 80);
         }
         req.getRequestDispatcher("/jsp/ui.jsp").forward(req, resp);
     }

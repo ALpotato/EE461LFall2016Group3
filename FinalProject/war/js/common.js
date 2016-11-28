@@ -1,9 +1,9 @@
-
 window.onload = function () {
     var container = document.getElementById('container');
     var start = document.getElementById('start');
     var start_inner = document.getElementById('start_inner');
-    var gameRestart = document.getElementById('gameRestart');
+    var game_restart = document.getElementById('game_restart');
+    var back_to_main = document.getElementById('back_to_main');
     var ul = container.getElementsByTagName('ul');
     var p = container.getElementsByTagName('p');
     var li = container.getElementsByTagName('li');
@@ -31,20 +31,28 @@ window.onload = function () {
         var ulChange = document.createElement('ul');
         container.appendChild(ulChange);
     }
-    start_inner.onclick = function() {
-        if(start_inner.innerHTML == "Start!") {
+
+
+    start_inner.onclick = function () {
+        if (start_inner.innerHTML == "Start!") {
             play();
         } else {
             start_inner.innerHTML = "loading...";
         }
     };
 
+    back_to_main.onclick = function () {
+        $.get("/index")
+    };
+    // mouse onclick events
+    game_restart.onclick = reload;
+
+
     // move arrows up
     function move() {
-    	if ((perfect + great + good + bad + miss == noteArray.length) && ended == 0)
-    	{
-    		end();
-    	}
+        if ((perfect + great + good + bad + miss == noteArray.length) && ended == 0) {
+            end();
+        }
         for (var n = 0; n < noteArray.length; n++) {
             var time = Date.now();
             var t1 = time - startTime;
@@ -97,7 +105,8 @@ window.onload = function () {
         startTime = Date.now();
         ended = 0;
         start_inner.style.display = "none";
-        gameRestart.style.display = "initial";
+        game_restart.style.display = "initial";
+        back_to_main.style.display = "initial";
         status.innerHTML = "";
         for (var n in noteFile) {
             var column = parseInt(noteFile[n].column) - 1;
@@ -177,9 +186,20 @@ window.onload = function () {
             type: "POST",
             url: '/leaderBoard',
             dataType: 'json',
-            data: '{"score":' + scoreChange + ', "perfect":' + perfect + ', "great":' + great + ', "good":' + good + ', "bad":' + bad + ', "maxCombo":' + maxCombo + ', "songIndex":' + songIndex + '}',
-            success: function(){
+            data: {
+                score: scoreChange,
+                perfect: perfect,
+                great: great,
+                good: good,
+                bad: bad,
+                maxCombo: maxCombo,
+                songIndex: songIndex
+            },
+            success: function () {
                 alert("score information uploaded successfully");
+            },
+            error: function () {
+                alert("fail");
             }
         });
     }
@@ -250,11 +270,8 @@ window.onload = function () {
 
     function reload() {
         document.location.reload();
-        gameRestart.style.display = "none";
+        game_restart.style.display = "none";
     }
-
-    // mouse onclick events
-    gameRestart.onclick = reload;
 
     // key down event
     document.onkeydown = function (ev) {
@@ -276,10 +293,10 @@ window.onload = function () {
             case 82: //R for reload
                 reload();
                 break;
-/*            case 13: //Enter to start the game
-                if(ended == 1) {
-                    play();
-                }*/
+            /*            case 13: //Enter to start the game
+             if(ended == 1) {
+             play();
+             }*/
         }
     };
 

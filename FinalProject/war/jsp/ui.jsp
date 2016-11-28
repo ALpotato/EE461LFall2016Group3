@@ -10,30 +10,27 @@
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css"/>
 </head>
 <body>
-<div class="container" id="container">
+<div class="container" id="ui_container">
     <c:if test="${not empty songs}">
         <%-- TODO: make this prettier...so ugly now....--%>
         <div id="song_select">
         <label>Select which song you would like to play:</label>
         <form action="${pageContext.request.contextPath}/ui" method="post">
             <c:forEach items="${songs}" var="song">
-                <input type="submit" name="song_name" value="${song.songName}">
+                <input class="songs" id="song${song.index}" type="submit" name="song_name" value="${song.songName}">
                 <br>
             </c:forEach>
         </form>
     </div>
 </div>
 </c:if>
-<c:if test="${not empty songName1}">
+<c:if test="${not empty songName}">
     <div id="start_inner">Start!</div>
     <div id="status"></div>
     <div id="score">0</div>
     <div id="life">100</div>
-
-    <div id="gameRestart">Restart</div>
-
-    <div class="ruler01"></div>
-    <div class="ruler02"></div>
+    <div class="inGameButtons" id="back_to_main">Back</div>
+    <div class="inGameButtons" id="game_restart">Restart</div>
 
     <div class="keyContainer">
         <p id="p01"></p>
@@ -53,7 +50,7 @@
 </script>
 <!-- music selected by player -->
 <audio id="music" preload="auto">
-    <source src="${pageContext.request.contextPath}/music/${songName2}" type="audio/mpeg">
+    <source src="${pageContext.request.contextPath}/music/${songName}.mp3" type="audio/mpeg">
 </audio>
 </c:if>
 </body>
