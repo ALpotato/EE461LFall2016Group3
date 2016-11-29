@@ -54,14 +54,16 @@ public class LeaderBoardServlet extends HttpServlet {
             scoreList.getScoreList().add(score);
         } else {
             List<Score> list = scoreList.getScoreList();
-            ofy().delete().entity(scoreList).now();
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getScore() < Double.parseDouble(req.getParameter("score"))) {
                     list.add(i, score);
+                    scoreList.setScoreList(list);
+                    ofy().save().entity(scoreList).now();
                     return;
                 }
             }
             list.add(score);
+            scoreList.setScoreList(list);
         }
         ofy().save().entity(scoreList).now();
     }
@@ -78,10 +80,7 @@ public class LeaderBoardServlet extends HttpServlet {
 
     private List<ScoreList> getSortedBoard() {
         List<ScoreList> leaderBoard = new ArrayList<>();
-        for (int i = 1; i < Song.values().length; i++) {
-            if (i == 2) {
-                continue;
-            }
+        for (int i = 1; i <= Song.values().length; i++) {
             ScoreList list = ofy().load().type(ScoreList.class).filter("index", String.valueOf(i)).first().now();
             if (list != null) {
                 leaderBoard.add(list);

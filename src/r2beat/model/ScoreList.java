@@ -31,6 +31,10 @@ public class ScoreList {
     public List<Score> getScoreList() {
         return sortList();
     }
+    
+    public void setScoreList(List<Score> sl) {
+        this.scoreList = sl;
+    }
 
     private List<Score> sortList() {
         if (scoreList != null && !scoreList.isEmpty()) {
