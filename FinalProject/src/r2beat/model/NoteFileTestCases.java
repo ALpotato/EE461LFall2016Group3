@@ -9,78 +9,61 @@ import org.junit.Test;
 
 public class NoteFileTestCases {
 
-	NoteFile testNoteFile1;
-	NoteFile testNoteFile2;
-	NoteFile testNoteFile3;
-	NoteFile testNoteFile4;
-	NoteFile testNoteFile5;
-	NoteFile testNoteFile6;
-	NoteFile testNoteFile7;
-	NoteFile testNoteFile8;
-	NoteFile testNoteFile9;
+	NoteFile testNoteFile;
+	int[] preset = { 3, 2, 3, 2, 1, 2, 4, 4, 3, 2, 3, 2, 1, 2, 4, 3, 2, 1, 2, 1, 2, 4, 4, 3, 2, 3, 2, 1, 2, 4, 3, 2, 1,
+			2, 2, 3, 4, 3, 2, 1, 2, 3, 4, 3, 1, 4, 2, 4, 2, 3, 1, 3, 1, 4, 2, 4, 2, 3, 1, 3, 4, 4, 2, 4, 2, 3, 1, 3, 1,
+			4, 2, 4, 2, 3, 1, 3, 4, 2, 4, 4, 3, 2, 3, 2, 1, 2, 4, 3, 2, 1, 2, 1, 2, 3, 3, 2, 3, 2, 1, 2, 4, 4, 3, 2, 3,
+			2, 1, 2, 4, 3, 2, 1, 2, 1, 2, 4, 4, 3, 2, 3, 2, 1, 2, 4, 3, 2, 1, 2, 2, 3, 4, 3, 2, 1, 2, 3, 4, 3, 1, 4, 2,
+			4, 2, 3, 1, 3, 1, 4, 2, 4, 2, 3, 1, 3, 4, 4, 2, 4, 2, 3, 1, 3, 1, 4, 2, 4, 2, 3, 1, 3, 4, 2, 4, 4, 3, 2, 3,
+			2, 1, 2, 4, 3, 2, 1, 2, 1, 2, 3, 3, 2, 3, 2, 1, 2, 4, 4, 3, 2, 3, 2, 1, 2, 4, 3, 2, 1, 2, 1, 2, 4, 4, 3, 2,
+			3, 2, 1, 2, 4, 3, 2, 1, 2, 2, 3, 4, 3, 2, 1, 2, 3, 4, 3, 1, 4, 2, 4, 2, 3, 1, 3, 1, 4, 2, 4, 2, 3, 1, 3, 4,
+			4, 2, 4, 2, 3, 1, 3, 1, 4, 2, 4, 2, 3, 1, 3, 4, 2, 4, 4, 3, 2, 3, 2, 1, 2, 4, 3, 2, 1, 2, 1, 2, 3 };
 
+	/**
+	 * preparing file to be tested
+	 */
 	@Before
 	public void setUp() {
-		testNoteFile1 = new NoteFile(new File("notefiles/Newbie Melody.sm"));
-		testNoteFile2 = new NoteFile(new File("notefiles/Tetris Theme A.sm"));
-		testNoteFile3 = new NoteFile(new File("notefiles/I Burn.sm"));
-		testNoteFile4 = new NoteFile(new File("notefiles/SMB Main Theme.sm"));
-		testNoteFile5 = new NoteFile(new File("notefiles/Not As It Seems.sm"));
-		testNoteFile6 = new NoteFile(new File("notefiles/One Winged Angel.sm"));
-		testNoteFile7 = new NoteFile(new File("notefiles/Intersect Thunderbolt.sm"));
-		testNoteFile8 = new NoteFile(new File("notefiles/Megalovania.sm"));
-		testNoteFile9 = new NoteFile(new File("notefiles/Extratone Pirates.sm"));
+		testNoteFile = new NoteFile(new File("war/notefiles/Newbie Melody.sm"));
 	}
 
+	/**
+	 * Test for the file being created
+	 */
 	@Test
-	public void testNoteFile1() {
+	public void creationTest() {
+		boolean flag = false;
+		if (testNoteFile.getNotes().get(0) != null)
+			flag = true;
+		assertTrue(flag);
+	}
+
+	/**
+	 * Test for the same file being created every time the system is creating
+	 * same song
+	 */
+	@Test
+	public void comparisonTest() {
 		boolean flag = true;
-		NoteFile compareNoteFile = new NoteFile(new File("notefiles/Newbie Melody.sm"));
-		for (int i = 0; i < compareNoteFile.getNotes().size(); i += 1){
-			if(compareNoteFile.getNotes().get(i).getColumn() != testNoteFile1.getNotes().get(i).getColumn()){
+		NoteFile compareNoteFile = new NoteFile(new File("war/notefiles/Newbie Melody.sm"));
+		for (int i = 0; i < compareNoteFile.getNotes().size(); i += 1) {
+			if (compareNoteFile.getNotes().get(i).getColumn() != testNoteFile.getNotes().get(i).getColumn()) {
 				flag = false;
 			}
 		}
 		assertTrue(flag);
 	}
 
+	/**
+	 * Test for the file that reproduce the correct output
+	 */
 	@Test
-	public void testNoteFile2() {
-		assertEquals(new NoteFile(new File("notefiles/Tetris Theme A.sm")).getNotes(), testNoteFile2.getNotes());
-	}
-
-	@Test
-	public void testNoteFile3() {
-		assertEquals(new NoteFile(new File("notefiles/I burn.sm")), testNoteFile3);
-	}
-	
-	@Test
-	public void testNoteFile4() {
-		assertEquals(new NoteFile(new File("notefiles/SMB Main Theme.sm")), testNoteFile4);
-	}
-
-	@Test
-	public void testNoteFile5() {
-		assertEquals(new NoteFile(new File("notefiles/Not As It Seems.sm")), testNoteFile5);
-	}
-
-	@Test
-	public void testNoteFile6() {
-		assertEquals(new NoteFile(new File("notefiles/One Winged Angel.sm")), testNoteFile6);
-	}
-	
-	@Test
-	public void testNoteFile7() {
-		assertEquals(new NoteFile(new File("notefiles/Intersect Thunderbolt.sm")), testNoteFile7);
-	}
-
-	@Test
-	public void testNoteFile8() {
-		assertEquals(new NoteFile(new File("notefiles/Megalovania.sm")), testNoteFile8);
-	}
-
-	@Test
-	public void testNoteFile9() {
-		assertEquals(new NoteFile(new File("notefiles/Extratone Pirates.sm")), testNoteFile9);
+	public void eqaulTest() {
+		boolean flag = true;
+		for (int i = 0; i < testNoteFile.getNotes().size(); i += 1) {
+			if (testNoteFile.getNotes().get(i).getColumn() != preset[i])
+				flag = false;
+		}
+		assertTrue(flag);
 	}
 }
